@@ -1,9 +1,19 @@
-import { client, path, getJwt }  from './client.js' ;
+import { client, path, getJwt } from './client.js';
 import qs from "qs"
 
-function request(resource, data) {
+
+// check out the docuemtn
+// https://docs.strapi.io/developer-docs/latest/developer-resources/database-apis-reference/rest-api.html
+
+export default function request(resource, data) {
     return client.get(`${path}${resource}`, {
-        params: data,
+        params: data || {
+            pagination: {
+                pageSize: 100000000,
+                page: 1,
+            },
+            publicationState: 'live',
+        },
         paramsSerializer: qs.stringify,
         headers: {
             Authorization: `Bearer ${getJwt()}`,
@@ -11,6 +21,6 @@ function request(resource, data) {
     });
 }
 
-request("categories", { pagination: { withCount: true } }).then((res) => {
-    console.log(JSON.stringify(res.data))
+request("categories").then((res) => {
+    console.log(res.data.data.length)
 })
