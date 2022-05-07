@@ -5,15 +5,18 @@ import {fileURLToPath} from 'url';
 const __filename = fileURLToPath(import.meta.url);
 
 
-function upload_request(url, filePath, jwt) {
+function upload_request(filePath, name, jwt) {
+    const url = `${path}upload`
     const form_data = new FormData();
     form_data.append("files", fs.createReadStream(filePath));
     form_data.append("fileInfo", JSON.stringify({
-        name: "test.js",
-        caption: "test",
-        alternativeText: "test.js"
+        name: name,
+        caption: name,
+        alternativeText: name
     }));
     const request_config = {
+        maxContentLength: Infinity,
+        maxBodyLength: Infinity,
         headers: {
             "Authorization": "Bearer " + jwt,
             ...form_data.getHeaders(),
@@ -24,7 +27,7 @@ function upload_request(url, filePath, jwt) {
 }
 
 
-upload_request(`${path}upload`, __filename, getJwt())
+upload_request('C:\\Users\\ChaoChen\\Downloads\\Display 3.mp4','bigfile', getJwt())
     .then((res) => {
         const response_example = [{
             "id": 5,

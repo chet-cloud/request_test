@@ -2,7 +2,7 @@ import { client, path, getJwt } from './client.js';
 
 
 function request(resource, data) {
-    return client.post(`${path}${resource}`, data, {
+    return axios.post(`${path}${resource}`, data, {
         headers: {
             'accept': 'application/json',
             'Content-Type': 'application/json',
